@@ -1,0 +1,24 @@
+// assets/css/global.scss
+
+//color
+$primary: #FF6B86;
+$primary-light: #B1B1B1;
+
+$secondary: #52CDFF;
+$secondary-dark: #38171D;
+
+$theme-colors: (
+    "light": $primary
+);
+
+// the ~ allows you to reference things in node_modules
+@import "~bootstrap/scss/bootstrap";
+
+body {
+    color: $secondary-dark;
+}
+
+.navbar-dark .navbar-nav .nav-link,
+.navbar .navbar-brand {
+    color: $secondary-dark;
+}
