@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Episode;
 use App\Entity\Program;
+use App\Entity\Season;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -66,7 +68,7 @@ class WildController extends AbstractController
     /**
      * @Route("/wild/category/{categoryName}",
      *     requirements={"categoryName"="[a-z0-9-]+"},
-     *     name="show-category")
+     *     name="show_category")
      * @param string $categoryName
      * @return Response A category
      */
@@ -75,6 +77,10 @@ class WildController extends AbstractController
         if (!$categoryName) {
             throw $this->createNotFoundException('No category has been sent to find programs in program\'s table.');
         }
+        $categoryName = preg_replace(
+            '/-/',
+            ' ', trim(strip_tags($categoryName))
+        );
         $category = $this->getDoctrine()
             ->getRepository(Category::class)
             ->findOneBy(['name' => mb_strtolower($categoryName)]);
@@ -93,6 +99,65 @@ class WildController extends AbstractController
             'programs' => $programs,
             'category' => $category,
             'categoryName' => $categoryName
+        ]);
+    }
+
+    /**
+     * @Route("/wild/program/{programTitle}",
+     *     requirements={"programTitle"="[a-z0-9-]+"},
+     *     name="show_program")
+     * @param string $programTitle
+     * @return Response
+     */
+    public function showByProgram(string $programTitle): Response
+    {
+        if (!$programTitle) {
+            throw $this->createNotFoundException('No program has been sent to find seasons in season\'s table.');
+        }
+        $programTitle = preg_replace(
+            '/-/',
+            ' ', trim(strip_tags($programTitle))
+        );
+        $program = $this->getDoctrine()
+            ->getRepository(Program::class)
+            ->findOneBy(['title' => mb_strtolower($programTitle)]);
+        $seasons = $this->getDoctrine()
+            ->getRepository(Season::class)
+            ->findBy(['program' => $program]);
+//        if (!$seasons)
+//            throw $this->createNotFoundException('No season found in season\'s table.');
+
+        return $this->render('wild/program.html.twig', [
+            'program' => $program,
+            'seasons' => $seasons
+        ]);
+    }
+
+    /**
+     * @Route("/wild/season/{id}",
+     *     requirements={"id"="^[0-9]+$"},
+     *     name="show_season")
+     * @param int $id
+     * @return Response A season
+     */
+    public function showBySeason(int $id)
+    {
+        if (!$id) {
+            throw $this->createNotFoundException('No id has been sent to find seasons in season\'s table');
+        }
+        $season = $this->getDoctrine()
+            ->getRepository(Season::class)
+            ->findOneBy(['id' => $id]);
+        $episodes = $this->getDoctrine()
+            ->getRepository(Episode::class)
+            ->findBy(['season' => $season]);
+        if (!$episodes)
+            throw $this->createNotFoundException('No episodes found in episode\'s table.');
+
+        return $this->render('wild/season.html.twig', [
+            'program' => $season->getProgram(),
+            'episodes' => $episodes,
+            'season' => $season
         ]);
     }
 }
