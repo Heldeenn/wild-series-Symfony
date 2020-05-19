@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Program;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,8 +16,16 @@ class WildController extends AbstractController
      */
     public function index() :Response
     {
+        $programs = $this->getDoctrine()
+            ->getRepository(Program::class)
+            ->findAll();
+
+        if(!$programs) {
+            throw $this->createNotFoundException('No program found in program\'s table.');
+        }
+
         return $this->render('wild/index.html.twig', [
-            'website' => 'Wild Séries',
+            'programs' => $programs
         ]);
     }
 
@@ -30,6 +39,26 @@ class WildController extends AbstractController
 
     public function show(string $slug): Response
     {
-        return $this->render('wild/show.html.twig', ['slug' => $slug]);
+        if (!$slug) {
+            throw $this
+            ->createNotFoundException('No slug has been sent to find a program in program\'s table.');
+        }
+        $slug = preg_replace(
+            '/-/',
+            ' ', ucwords(trim(strip_tags($slug)), "-")
+        );
+        $program = $this->getDoctrine()
+            ->getRepository(Program::class)
+            ->findOneBy(['title' => mb_strtolower($slug)]);
+        if (!$program) {
+            throw $this->createNotFoundException(
+                'No program with'.$slug.' title, found in program\'s table.'
+            );
+        }
+
+        return $this->render('wild/show.html.twig', [
+            'slug' => $slug,
+            'program' => $program
+        ]);
     }
 }
