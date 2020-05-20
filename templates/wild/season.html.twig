@@ -8,11 +8,8 @@
 
         <h2>Liste des épisodes</h2>
         {% for episode in episodes %}
-            <div class="card">
-                <div class="card-body">
-                    <h3>Episode {{ episode.number }} - {{ episode.title }}</h3>
-                    <p>{{ episode.synopsis }}</p>
-                </div>
+            <div>
+                <a href="{{ path('show_episode', {id: episode.id}) }}">Episode {{ episode.number }} - {{ episode.title }}</a>
             </div>
         {% endfor %}
     </div>
