@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add a category{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <h2>Ajouter une catégorie</h2>
+        {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        <button class="btn">{{ button_label|default('Ajouter') }}</button>
+        {{ form_end(form) }}
+
+        {% for category in categories %}
+            <div>
+                <a href="{{ path('show_category', {categoryName: category.name|lower|replace({' ': '-'})}) }}">{{ category.name }}</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
