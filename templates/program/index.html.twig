@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Program index{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+    <h1>Index des séries</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Titre</th>
+                <th scope="col">Résumé</th>
+                <th scope="col">Image</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for program in programs %}
+            <tr>
+                <th scope="row">{{ program.id }}</th>
+                <td>{{ program.title }}</td>
+                <td>{{ program.summary }}</td>
+                <td><img class="w-25" src="{{ program.poster }}" alt="{{ program.title }}"></td>
+                <td>
+                    <a href="{{ path('program_show', {'id': program.id}) }}">Voir</a>
+                    <a href="{{ path('program_edit', {'id': program.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a type="button" class="btn btn-primary" href="{{ path('program_new') }}">Ajouter une nouvelle série</a>
+    </div>
+{% endblock %}

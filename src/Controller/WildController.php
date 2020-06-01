@@ -6,9 +6,11 @@ use App\Entity\Category;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
+use App\Form\ProgramSearchType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class WildController extends AbstractController
@@ -27,8 +29,15 @@ class WildController extends AbstractController
             throw $this->createNotFoundException('No program found in program\'s table.');
         }
 
+        $form = $this->createForm(
+            ProgramSearchType::class,
+            null,
+            ['method' => Request::METHOD_GET]
+        );
+
         return $this->render('wild/index.html.twig', [
-            'programs' => $programs
+            'programs' => $programs,
+            'form' => $form->createView()
         ]);
     }
 
@@ -70,9 +79,9 @@ class WildController extends AbstractController
      *     requirements={"categoryName"="[a-z0-9-]+"},
      *     name="show_category")
      * @param string $categoryName
-     * @return Response A category
+     * @return Response
      */
-    public function showByCategory(string $categoryName)
+    public function showByCategory(string $categoryName): Response
     {
         if (!$categoryName) {
             throw $this->createNotFoundException('No category has been sent to find programs in program\'s table.');
@@ -138,9 +147,9 @@ class WildController extends AbstractController
      *     requirements={"id"="^[0-9]+$"},
      *     name="show_season")
      * @param int $id
-     * @return Response A season
+     * @return Response
      */
-    public function showBySeason(int $id)
+    public function showBySeason(int $id): Response
     {
         if (!$id) {
             throw $this->createNotFoundException('No id has been sent to find seasons in season\'s table');
@@ -158,6 +167,24 @@ class WildController extends AbstractController
             'program' => $season->getProgram(),
             'episodes' => $episodes,
             'season' => $season
+        ]);
+    }
+
+    /**
+     * @Route("/wild/episode/{id}",
+     *     requirements={"id"="^[0-9]+$"},
+     *     name="show_episode")
+     * @param Episode $episode
+     * @return Response
+     */
+    public function showEpisode(Episode $episode): Response
+    {
+        $season = $episode->getSeason();
+        $program = $season->getProgram();
+        return $this->render('wild/episode.html.twig', [
+            'episode' => $episode,
+            'season' => $season,
+            'program' => $program
         ]);
     }
 }
