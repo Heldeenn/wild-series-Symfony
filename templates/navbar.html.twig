@@ -4,12 +4,34 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="{{ path('category_add') }}"><span class="sr-only">(current)</span>Categories</a>
-            <a class="nav-item nav-link active" href="{{ path('program_index') }}"><span class="sr-only">(current)</span>Séries</a>
-            <a class="nav-item nav-link active" href="{{ path('actor_index') }}"><span class="sr-only">(current)</span>Acteurs/Actrices</a>
-            <a class="nav-item nav-link active" href="{{ path('season_index') }}"><span class="sr-only">(current)</span>Saisons</a>
-            <a class="nav-item nav-link active" href="{{ path('episode_index') }}"><span class="sr-only">(current)</span>Episodes</a>
-        </div>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link active" href="{{ path('category_add') }}"><span class="sr-only">(current)</span>Categories</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('program_index') }}"><span class="sr-only">(current)</span>Séries</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('actor_index') }}"><span class="sr-only">(current)</span>Acteurs/Actrices</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('season_index') }}"><span class="sr-only">(current)</span>Saisons</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('episode_index') }}"><span class="sr-only">(current)</span>Episodes</a>
+            </li>
+            {% if app.user %}
+            <li class="nav-item">
+                <a href="#" class="nav-link active"> {{ app.user.email }} </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('app_logout') }}"> Se déconnecter</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('app_login') }}"> Se connecter</a>
+            </li>
+            {% endif %}
+        </ul>
     </div>
 </nav>
