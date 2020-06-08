@@ -14,5 +14,31 @@
                 </div>
             </div>
         </div>
+        <br>
+        <h3>Laisser un commentaire</h3>
+        {% if is_granted('ROLE_SUBSCRIBER') %}
+            {{ form_start(form) }}
+            <h4 class="mt-4">Commentaire :</h4>
+            {{ form_widget(form.comment) }}
+            <h4 class="mt-4">Note :</h4>
+            {{ form_widget(form.rate) }}
+            <div class="text-right">
+                <button class="btn btn-primary round btn-lg mt-3 text-center">{{ button_label|default('Ajouter un commentaire') }}</button>
+            </div>
+            {{ form_end(form) }}
+            <br>
+            <h3>Commentaires</h3>
+                {% for comment in comments|sort %}
+                    <div class="border p-3 m-3">
+                        <p> {{ comment.author.email }} | <strong>{{ comment.rate }}</strong></p>
+                     <p>{{ comment.comment }}</p>
+                    {% if comment.author.id == user.id %}
+                        {{ include('comment/_delete_form.html.twig') }}
+                    {% endif %}
+                    </div>
+                {% endfor %}
+        {% else %}
+            <a class="btn btn-primary" href="{{ path('app_login') }}">Connectez-vous</a>
+        {% endif %}
     </div>
 {% endblock %}
