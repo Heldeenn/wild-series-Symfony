@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/program")
@@ -22,6 +23,7 @@ class ProgramController extends AbstractController
      * @Route("/", name="program_index", methods={"GET"})
      * @param ProgramRepository $programRepository
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(ProgramRepository $programRepository): Response
     {
@@ -37,6 +39,7 @@ class ProgramController extends AbstractController
      * @param MailerInterface $mailer
      * @return Response
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, Slugify $slugify, MailerInterface $mailer): Response
     {
@@ -70,6 +73,7 @@ class ProgramController extends AbstractController
     /**
      * @Route("/{slug}", name="program_show", methods={"GET"})
      * @param Program $program
+     * @IsGranted("ROLE_ADMIN")
      * @return Response
      */
     public function show(Program $program): Response
@@ -85,6 +89,7 @@ class ProgramController extends AbstractController
      * @param Program $program
      * @param Slugify $slugify
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Program $program, Slugify $slugify): Response
     {
@@ -110,6 +115,7 @@ class ProgramController extends AbstractController
      * @param Request $request
      * @param Program $program
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Program $program): Response
     {
