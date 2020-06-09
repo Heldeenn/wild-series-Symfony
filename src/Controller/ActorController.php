@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/actor")
@@ -20,6 +21,7 @@ class ActorController extends AbstractController
      * @Route("/", name="actor_index", methods={"GET"})
      * @param ActorRepository $actorRepository
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(ActorRepository $actorRepository): Response
     {
@@ -33,6 +35,7 @@ class ActorController extends AbstractController
      * @param Request $request
      * @param Slugify $slugify
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, Slugify $slugify): Response
     {
@@ -60,6 +63,7 @@ class ActorController extends AbstractController
      * @Route("/{slug}", name="actor_show", methods={"GET"})
      * @param Actor $actor
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      */
     public function show(Actor $actor): Response
     {
@@ -74,6 +78,7 @@ class ActorController extends AbstractController
      * @param Actor $actor
      * @param Slugify $slugify
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Actor $actor, Slugify $slugify): Response
     {
@@ -99,6 +104,7 @@ class ActorController extends AbstractController
      * @param Request $request
      * @param Actor $actor
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Actor $actor): Response
     {

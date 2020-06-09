@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/episode")
@@ -18,6 +19,7 @@ class EpisodeController extends AbstractController
 {
     /**
      * @Route("/", name="episode_index", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(EpisodeRepository $episodeRepository): Response
     {
@@ -31,6 +33,7 @@ class EpisodeController extends AbstractController
      * @param Request $request
      * @param Slugify $slugify
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, Slugify $slugify): Response
     {
@@ -56,6 +59,7 @@ class EpisodeController extends AbstractController
 
     /**
      * @Route("/{slug}", name="episode_show", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function show(Episode $episode): Response
     {
@@ -70,6 +74,7 @@ class EpisodeController extends AbstractController
      * @param Episode $episode
      * @param Slugify $slugify
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Episode $episode, Slugify $slugify): Response
     {
@@ -92,6 +97,7 @@ class EpisodeController extends AbstractController
 
     /**
      * @Route("/{slug}", name="episode_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Episode $episode): Response
     {
