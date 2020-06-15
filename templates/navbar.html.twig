@@ -21,12 +21,15 @@
                 <a class="nav-link active" href="{{ path('episode_index') }}"><span class="sr-only">(current)</span>Episodes</a>
             </li>
             {% if app.user %}
-            <li class="nav-item">
-                <a href="#" class="nav-link active"> {{ app.user.email }} </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{{ path('app_logout') }}"> Se déconnecter</a>
-            </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Mon compte
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a href="#" class="dropdown-item"> {{ app.user.email }} </a>
+                        <a class="dropdown-item" href="{{ path('app_logout') }}"> Se déconnecter</a>
+                    </div>
+                </li>
             {% else %}
             <li class="nav-item">
                 <a class="nav-link active" href="{{ path('app_login') }}"> Se connecter</a>
