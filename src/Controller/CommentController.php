@@ -42,6 +42,7 @@ class CommentController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Le commentaire a bien été ajouté.');
             return $this->redirectToRoute('comment_index');
         }
 
@@ -93,6 +94,7 @@ class CommentController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($comment);
             $entityManager->flush();
+            $this->addFlash('danger', 'Le commentaire a bien été supprimé.');
         }
 
         return $this->redirectToRoute('comment_index');
