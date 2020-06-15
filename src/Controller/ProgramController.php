@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @Route("/program")
@@ -59,8 +60,8 @@ class ProgramController extends AbstractController
                 ->subject('Une nouvelle série vient d\'être publiée !')
                 ->html($this->renderView('program/email/notification.html.twig', ['program' => $program]));
 
+            $this->addFlash('success', 'La série a bien été ajoutée.');
             $mailer->send($email);
-
             return $this->redirectToRoute('program_index');
         }
 
@@ -123,6 +124,7 @@ class ProgramController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($program);
             $entityManager->flush();
+            $this->addFlash('danger', 'La série a bien été supprimée.');
         }
 
         return $this->redirectToRoute('program_index');

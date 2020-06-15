@@ -49,6 +49,7 @@ class SeasonController extends AbstractController
             return $this->redirectToRoute('season_index');
         }
 
+        $this->addFlash('success', 'La saison a bien été ajoutée.');
         return $this->render('season/new.html.twig', [
             'season' => $season,
             'form' => $form->createView(),
@@ -105,6 +106,7 @@ class SeasonController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($season);
             $entityManager->flush();
+            $this->addFlash('danger', 'La saison a bien été supprimée.');
         }
 
         return $this->redirectToRoute('season_index');
