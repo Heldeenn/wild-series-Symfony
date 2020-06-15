@@ -12,6 +12,7 @@
                 <th scope="col">Id</th>
                 <th scope="col">Titre</th>
                 <th scope="col">Résumé</th>
+                <th scope="col">Slug</th>
                 <th scope="col">Image</th>
                 <th scope="col">Actions</th>
             </tr>
@@ -22,10 +23,11 @@
                 <th scope="row">{{ program.id }}</th>
                 <td>{{ program.title }}</td>
                 <td>{{ program.summary }}</td>
+                <td>{{ program.slug }}</td>
                 <td><img class="w-25" src="{{ program.poster }}" alt="{{ program.title }}"></td>
                 <td>
-                    <a href="{{ path('program_show', {'id': program.id}) }}">Voir</a>
-                    <a href="{{ path('program_edit', {'id': program.id}) }}">Modifier</a>
+                    <a href="{{ path('program_show', {'slug': program.slug}) }}">Voir</a>
+                    <a href="{{ path('program_edit', {'slug': program.slug}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}

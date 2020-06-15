@@ -17,6 +17,10 @@
                 <td>{{ program.title }}</td>
             </tr>
             <tr>
+                <th>Slug</th>
+                <td>{{ program.slug }}</td>
+            </tr>
+            <tr>
                 <th>Résumé</th>
                 <td>{{ program.summary }}</td>
             </tr>
@@ -24,12 +28,23 @@
                 <th>Image</th>
                 <td>{{ program.poster }}</td>
             </tr>
+
         </tbody>
     </table>
 
+    <strong>Acteur</strong>
+    <ul>
+        {% for actor in program.actors %}
+            <li><a href="{{ path('actor_show', {'slug': actor.slug}) }}">{{ actor.name }}</a></li>
+        {% else %}
+            <li>Aucun acteur pour cette série</li>
+        {% endfor %}
+    </ul>
+
+
     <a href="{{ path('program_index') }}">Retour à la liste</a>
 
-    <a href="{{ path('program_edit', {'id': program.id}) }}">Modifier</a>
+    <a href="{{ path('program_edit', {'slug': program.slug}) }}">Modifier</a>
 
     {{ include('program/_delete_form.html.twig') }}
 </div>
